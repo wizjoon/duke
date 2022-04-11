@@ -7,23 +7,35 @@ public class Task {
         isDone = false;
     }
 
+    /*
     public void setDone(){
         this.isDone = true;
         System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  [X]" + " " + this.description);
+        System.out.println("  [X]" + " " + getDescription());
     }
 
     public void setUndone(){
         this.isDone = false;
         System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println("  [ ]" + " " + this.description);
+        System.out.println("  [ ]" + " " + getDescription());
+    }
+    */
+
+    public void changeMarkStatus(boolean markFlag){
+        isDone = markFlag;
+        if (isDone){
+            System.out.println("Nice! I've marked this task as done:");
+        } else{
+            System.out.println("OK, I've marked this task as not done yet:");
+        }
+        System.out.println("  " + getTaskStatus());
     }
 
     public String getTaskStatus(){
-        return (isDone ? "[X]"  + " " + this.description: "[ ]" + " " + this.description);
+        return (isDone ? "[X]"  + " " + getDescription(): "[ ]" + " " + getDescription());
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 }

@@ -13,9 +13,11 @@ public class DukeTaskOrganiser {
 
         Scanner readUserInput = new Scanner(System.in);
         String readUserRespond = "";
+        String taskDescription = "", taskDetail = "";
 
         boolean systemStatus = true;
 
+        Task newTask;
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
                 + "| | | | | | | |/ / _ \\\n"
@@ -41,29 +43,83 @@ public class DukeTaskOrganiser {
                 printTaskList();
             } else if (readUserRespond.toLowerCase().startsWith("mark") || readUserRespond.toLowerCase().startsWith("unmark")) {
                 try {
+                    boolean markFlag = false;
                     String[] words = readUserRespond.split(" ");
                     if (words.length == 2) {
                         int choiceTask = Integer.parseInt(words[1]);
                         if (words[0].equals("mark")) {
-                            toDoTaskList.get(choiceTask - 1).setDone();
+                            markFlag = true;
                         } else if (words[0].equals("unmark")) {
-                            toDoTaskList.get(choiceTask - 1).setUndone();
+                            markFlag = false;
                         }
+                        toDoTaskList.get(choiceTask - 1).changeMarkStatus(markFlag);
                     }
                 } catch (NumberFormatException ex) {
                     System.out.println("Please enter a number for your choice");
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("Index out of bound");
                 }
-            } else {
+            } else if (readUserRespond.toLowerCase().startsWith("todo") || readUserRespond.toLowerCase().startsWith("deadline") || readUserRespond.toLowerCase().startsWith("event")) {
                 //todoList[taskCounter] = readUserRespond;
-                Task newTask = new Task(readUserRespond);
-                toDoTaskList.add(newTask);
-                System.out.println("added: " + readUserRespond);
-                taskCounter += 1;
+                if (readUserRespond.toLowerCase().startsWith("todo")) {
+                    taskDescription =  readUserRespond.substring(5);
+                    if (taskDescription.isBlank()) {
+                        System.out.println("OOPS!!! The description of a todo cannot be empty.");
+                        continue;
+                    } else {
+                        newTask = new ToDo(taskDescription);
+                        toDoTaskList.add(newTask);
+                        System.out.println("added: " + newTask.getTaskStatus());
+                        taskCounter += 1;
+                    }
+                } else if (readUserRespond.toLowerCase().startsWith("deadline")) {
+                    String[] words = readUserRespond.split("/");
+                    taskDescription =  words[0].substring(9);
+
+                    if (taskDescription.isBlank()) {
+                        System.out.println("OOPS!!! The description of a deadline cannot be empty.");
+                        continue;
+                    }
+                    if(words[1].toLowerCase().startsWith("by")) {
+                        taskDetail =  words[1].substring(3);
+                        if (taskDescription.isBlank()) {
+                            System.out.println("OOPS!!! The detail of a deadline cannot be empty.");
+                            continue;
+                        }
+                    } else {
+                        System.out.println("OOP!! Wrong deadline format!!");
+                        continue;
+                    }
+                        newTask = new Deadline(taskDescription, taskDetail);
+                        toDoTaskList.add(newTask);
+                        System.out.println("added: " + newTask.getTaskStatus());
+                        taskCounter += 1;
+                    } else if (readUserRespond.toLowerCase().startsWith("event")){
+                        String[] words = readUserRespond.split("/");
+                        taskDescription =  words[0].substring(6);
+
+                        if (taskDescription.isBlank()) {
+                            System.out.println("OOPS!!! The description of a event cannot be empty.");
+                            continue;
+                        }
+                        if(words[1].toLowerCase().startsWith("at")) {
+                            taskDetail =  words[1].substring(3);
+                            if (taskDescription.isBlank()) {
+                                System.out.println("OOPS!!! The detail of a event cannot be empty.");
+                                continue;
+                            }
+                        } else {
+                            System.out.println("OOP!! Wrong event format!!");
+                            continue;
+                        }
+                            newTask = new Event(taskDescription, taskDetail);
+                            toDoTaskList.add(newTask);
+                            System.out.println("added: " + newTask.getTaskStatus());
+                            taskCounter += 1;
+                    }
+                }
             }
         }
-    }
 
     public void printTaskList() {
         if (taskCounter == 0) {
