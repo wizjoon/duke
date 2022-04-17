@@ -1,0 +1,8 @@
+T | 0 | borrow book
+E | 1 | attend AI seminar | at NUS on 2022-07-20
+E | 0 | attend Java course | at NTU on 2022-07-21
+E | 0 | attend Java course | at NTU on 2022-07-23
+E | 0 | attend C course | at NTU on 2022-07-25
+E | 1 | attend C course | at NTU on 2022-07-27
+E | 0 | attend AI course | at NTU on 2022-07-29
+D | 0 | submit assignment |   by 2022-08-01 1800
